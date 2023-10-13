@@ -1,0 +1,4 @@
+[app]
+192.168.56.2 ansible_user=vagrant ansible_private_key=/home/emirton/.ssh/ansible-connect
+[db]
+192.168.56.3 ansible_user=vagrant ansible_private_key=/home/emirton/.ssh/ansible-connect

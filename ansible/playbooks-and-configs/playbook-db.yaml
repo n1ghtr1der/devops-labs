@@ -1,0 +1,21 @@
+---
+- name: database instance setup
+  hosts: db
+
+  user: vagrant
+  become: yes
+  vars_files:
+    - vars/main.yml
+  vars:
+    - dbname: "db"
+    - dbusername: "root"
+    - dbpassword: "devopslabs"
+  tasks:
+    - name: lab hosts config
+      lineinfile: line "{{item}}" path=/etc/hosts
+      with_items:
+        - 192.168.56.2 app01
+        - 192.168.56.3 db01
+  roles:
+    - so-default-config
+    - role: geerlingguy.mysql #ansible galaxy role
