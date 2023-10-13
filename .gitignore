@@ -3,8 +3,9 @@
 
 ### Vagrant ###
 # General
-.vagrant/
-
+ansible/db01/.vagrant/*
+ansible/control-node/.vagrant/*
+ansible/app01/.vagrant/*
 # Log files (if you are creating logs in debug mode, uncomment this)
 # *.log
 
