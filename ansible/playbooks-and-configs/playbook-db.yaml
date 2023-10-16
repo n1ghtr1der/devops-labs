@@ -12,7 +12,10 @@
     - dbpassword: "devopslabs"
   tasks:
     - name: lab hosts config
-      lineinfile: line "{{item}}" path=/etc/hosts
+      lineinfile: 
+        dest: /etc/hosts
+        state: present
+        line: "{{item}}"
       with_items:
         - 192.168.56.2 app01
         - 192.168.56.3 db01
