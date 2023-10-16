@@ -1,0 +1,53 @@
+---
+- name: app instance setup
+  hosts: app
+
+  user: vagrant
+  become: yes
+
+  vars:
+    - dbhost: "192.168.56.3"
+    - dbname: "notes"
+    - dbusername: "notesapp"
+    - dbpassword: "devopslabs"
+  tasks:
+    - name: lab hosts config
+      lineinfile: 
+        dest: /etc/hosts
+        state: present
+        line: "{{item}}"
+      with_items:
+        - 192.168.56.2 app01
+        - 192.168.56.3 db01
+    - name: add app user
+      user:
+        name: app
+        comment: application user
+        uid: 1
+    - name: maven install
+      yum:
+        name: maven
+        state: latest
+    - name: java 1.8 install
+      yum:
+        name: java-1.8.0-openjdk
+        state: latest
+    - name: app directiories creation
+      file:
+        path: /opt/notes
+        state: directory
+        owner: app
+        group: app
+    - name: source code repo clone
+      git:
+        repo: 'https://github.com/callicoder/spring-boot-mysql-rest-api-tutorial.git'
+        dest: /opt/notes
+        clone: yes
+        force: yes
+    - name: property file setup for the db slice
+      template:
+        src: application.properties
+        dest: /opt/notes/src/resources/application.properties
+    - name: generate application packages
+      command: mvn -f /opt/notes.pom.xml package
+      become_user: app
