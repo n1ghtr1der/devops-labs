@@ -1,0 +1,15 @@
+---
+- name: jenkins instance setup
+  hosts: jenkins
+
+  user: vagrant
+  become: yes
+
+  tasks:
+    - name: jenkins install script
+      copy:
+        src: /home/emirton/Study/repo/devops-labs/jenkins/infra/jenkins-install.sh
+        dest: /home/vagrant/jenkins-install.sh
+        mode: "0755"
+    - name: installing jenkins
+      command: sh /home/vagrant/jenkins-install.sh

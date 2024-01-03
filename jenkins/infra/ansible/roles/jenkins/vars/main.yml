@@ -1,0 +1,5 @@
+---
+java: "openjdk-11-jdk"
+
+jenkins:
+  repo_URL: "https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key"
