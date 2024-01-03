@@ -1,0 +1,65 @@
+---
+
+  - name: Java download
+    apt:
+      name: "{{java}}"
+      state: present
+    become: yes
+  - name: Sonar user creation
+    user:
+      name: sonar
+      comment: Sonar User
+      uid: 1040
+    become: yes
+  - name: Unzip install
+    apt:
+      name: unzip
+      state: latest
+    become: yes
+    
+  - name: SonarQube Download
+    unarchive:
+      src: https://binaries.sonarsource.com/Distribution/sonarqube/{{sonarqube}}.zip
+      dest: /opt
+      remote_src: yes
+    become: yes
+  - name: SonarQube folder rename
+    command: mv /opt/{{sonarqube}} /opt/sonarqube
+    become: yes
+    
+  - name: Updating SonarQube directory owner
+    file:
+      path: /opt/sonarqube
+      state: directory
+      recurse: yes
+      owner: sonar
+      group: sonar
+    become: yes
+
+  - name: Sonar Scanner download
+    unarchive:
+      src: https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/{{sonarscanner}}.zip
+      dest: /opt
+      remote_src: yes
+    become: yes
+  - name: Sonar Scanner folder rename
+    command: mv /opt/{{sonarunzip}} /opt/sonar-scanner
+    become: yes
+  - name: Updating Sonar Scanner directory owner
+    file:
+      path: /opt/sonar-scanner
+      state: directory
+      recurse: yes
+      owner: sonar
+    become: yes
+  - name: Copying sonar service to host
+    copy:
+      src: /home/emirton/Study/repo/devops-labs/sonarqube/infra/sonarqube.service
+      dest: /etc/systemd/system/sonarqube.service
+    become: yes
+  - name: Starting SonarQube
+    systemd:
+      name: sonarqube
+      enabled: yes
+      state: started
+    become: yes

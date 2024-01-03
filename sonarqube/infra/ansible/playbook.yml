@@ -1,0 +1,5 @@
+---
+  - name: sonar setup
+    hosts: sonar
+    roles:
+      - sonar

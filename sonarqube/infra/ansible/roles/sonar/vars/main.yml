@@ -1,0 +1,8 @@
+---
+java: "openjdk-11-jdk"
+
+sonarqube: "sonarqube-9.1.0.47736"
+
+sonarscanner: "sonar-scanner-cli-4.6.2.2472-linux"
+
+sonarunzip: "sonar-scanner-4.6.2.2472-linux"
