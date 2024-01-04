@@ -1,0 +1,5 @@
+---
+  - name: Configuring Docker on host
+    hosts: docker
+    roles:
+      - docker

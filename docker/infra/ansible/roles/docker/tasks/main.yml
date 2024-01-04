@@ -1,0 +1,52 @@
+---
+
+  - name: Installing required packages
+    apt:
+      pkg:
+        - apt-transport-https
+        - ca-certificates
+        - curl
+        - software-properties-common
+        - python3-pip
+        - virtualenv
+        - python3-setuptools
+      state: latest
+      update_cache: true
+    become: yes
+
+  - name: Adding Docker GPG apt key
+    apt_key:
+      url: https://download.docker.com/linux/ubuntu/gpg
+      state: present
+    become: yes
+
+  - name: Adding Docker repo
+    apt_repository:
+      repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu jammy stable
+      state: present
+    become: yes
+
+  - name: Update apt and install docker-ce
+    apt:
+      name: docker-ce
+      state: latest
+      update_cache: true
+    become: yes
+
+  - name: Install Docker Module for Python
+    pip:
+      name: docker
+
+  - name: Install docker-compose
+    get_url:
+      url: https://github.com/docker/compose/releases/download/1.29.2/docker-compose-Linux-x86_64
+      dest: /usr/local/bin/docker-compose
+      mode: '755'
+    become: yes
+
+  - name: Adding docker user to user group for rootless usage
+    command: 'sudo usermod -aG docker $USER'
+  
+  - name: Reboot to enable docker rootless usage
+    reboot:
+    become: yes
