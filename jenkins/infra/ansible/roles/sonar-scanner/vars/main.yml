@@ -1,3 +1,4 @@
 ---
 sonarscanner: "sonar-scanner-cli-4.6.2.2472-linux"
 sonarunzip: "sonar-scanner-4.6.2.2472-linux"
+sonar_scanner_path: "/opt/sonar-scanner/bin"
