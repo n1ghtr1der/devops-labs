@@ -1,0 +1,35 @@
+---
+
+  - name: Unzip install
+    apt:
+      name: unzip
+      state: latest
+    become: yes
+    
+  - name: Sonar Scanner download
+    unarchive:
+      src: https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/{{sonarscanner}}.zip
+      dest: /opt
+      remote_src: yes
+    become: yes
+  
+  - name: Sonar Scanner folder rename
+    command: mv /opt/{{sonarunzip}} /opt/sonar-scanner
+    become: yes
+  
+  - name: Updating Sonar Scanner directory owner
+    file:
+      path: /opt/sonar-scanner
+      state: directory
+      recurse: yes
+      owner: sonar
+    become: yes
+  
+  - name: Adding sonar scanner bin to system $PATH
+    copy:
+      dest: /etc/profile.d/sonar-scanner-path.sh
+      content: 'PATH=$PATH:{{ sonar_scanner_path }}'
+    become: yes
+  
+  - name: Running script to export sonar scanner path
+    shell: source /etc/profile.d/sonar-scanner-path.sh
