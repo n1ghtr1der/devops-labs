@@ -27,9 +27,11 @@
   
   - name: Adding sonar scanner bin to system $PATH
     copy:
-      dest: /etc/profile.d/sonar-scanner-path.sh
+      dest: /home/vagrant/sonar-scanner-path.sh
       content: 'PATH=$PATH:{{ sonar_scanner_path }}'
+      mode: a+x
     become: yes
-  
+
   - name: Running script to export sonar scanner path
-    shell: source /etc/profile.d/sonar-scanner-path.sh
+    command: sh /home/vagrant/sonar-scanner-path.sh
+    become: yes
